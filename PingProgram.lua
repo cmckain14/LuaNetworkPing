@@ -6,8 +6,24 @@ function note()
 	end
 function status()
 	os.execute( "cls" )
+	if sr == nil and si == nil then 
+		sr = "[UNKNOWN]"
+		si = "[UNKNOWN]"
+		vt = vt + 1
+		end
+	if vt == 0 then
+		if sr == nil then
+			error("Warning: Variable 'sr' is nil.")
+			end
+		if si == nil then
+			error("Warning: Variable 'si' is nil.")
+			end
+		end	
 	print("The status of the connection to the main router is " ..sr..".")
 	print("The status of the connection to the internet is " ..si..".")
+	if asi ~= nil then
+		print("The status of the connection to a router is " ..asi..".")	
+		end
 	if ds == 0 then
 		print("The internet is fully operational!")
 		end
@@ -66,9 +82,17 @@ function debugging()
 		print("Thank you for using my Network Status tool written in Lua!")
 		end
 	end		
---Start of code--	
+--Start of code--
+require("socket")	
+rip = "192.168.1.1" --Change this to your router's IP address	
+website = "google.com" --Change this to the site you would like to ping
+ip = socket.dns.toip(website)
+if ip == nil then
+	error("No IP address found")
+	end	
 os.execute( "cls" )
-mr = os.execute("ping 192.168.1.1 -n 1") --Router Connection Testing
+vt = 0
+mr = os.execute("ping "..rip.." -n 1") --Router Connection Testing
 note()
 if mr == nil then
 	error("WTF!")
@@ -80,17 +104,18 @@ if mr == 0 then
 if mr == 1 then
 	os.execute( "cls" )
 	sr = "[BAD]"
+	si = "[BAD]"
 	end
 print("The status of the connection to the router is " ..sr..".")
 if si == "[READY]" then
-	dr = os.execute("ping 74.125.224.161 -n 1") --DNS Testing
+	dr = os.execute("ping "..ip.." -n 1") --DNS Testing
 	if dr == 0 then
 		sd = "[OK]"
 		end
 	if dr == 1 then
 		sd = "[BAD]"
 		end	
-	ir = os.execute("ping google.com -n 1") --Internet Testing
+	ir = os.execute("ping "..website.." -n 1") --Internet Testing
 	note()
 	if ir == 0 then
 		si = "[OK]"
@@ -110,7 +135,7 @@ if si == "[READY]" then
 		status()
 		end
 	end	
-if si == "[BAD]" then
+if sr == "[BAD]" then
 	air = os.execute("ping google.com -n 1") --Alternate Internet Testing
 	if air == 0 then
 		asi = "[OK]"
@@ -120,6 +145,7 @@ if si == "[BAD]" then
 		end
 	if asi == "[OK]" then
 		ds = 3
+		si = "[OK]"
 		status()
 		end
 	if asi == "[BAD]" then
