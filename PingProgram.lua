@@ -82,10 +82,11 @@ function debugging()
 		print("Thank you for using my Network Status tool written in Lua!")
 		end
 	end		
---Start of code--
-require("socket")	
-rip = "192.168.1.1" --Change this to your router's IP address	
+--Network Variables--	
+rip = "192.168.0.1" --Change this to your router's IP address	
 website = "google.com" --Change this to the site you would like to ping
+--Start of code--
+require("socket")
 ip = socket.dns.toip(website)
 if ip == nil then
 	error("No IP address found")
