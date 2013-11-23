@@ -15,7 +15,7 @@ function status()
 		print("The DNS servers are not working at the moment, please try later or try using 8.8.8.8 and 8.8.4.4 as your DNS servers.")
 		end
 	if ds == 2 then
-		print("The internet is down.")
+		print("The internet is down, please try again later.")
 		end
 	if ds == 3 then
 		print("You are connected to the internet but not to the main router.")
