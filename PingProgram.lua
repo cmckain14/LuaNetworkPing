@@ -9,7 +9,7 @@ function table()
 	if MTIA == "Yes" then
 		MTI = "Towny Islands Status: "
 		end
-	--AIT = "Alt. Internet Status: "
+	--AIT = "Alt. Internet Status: " --Will be removed at a later date
 	r = {si, dsr, sd, mti} --Table of network results, without the Alt. Internet (add 'asi')
 	print(ROS..r[2])
 	print(INS..r[1])
@@ -17,7 +17,7 @@ function table()
 	if MTIA == "Yes" then
 		print(MTI..r[4])
 		end
-	--print(AIT..r[4])
+	--print(AIT..r[4]) --Will be removed at a later date
 	if firstattheend == "status" then
 		endMessage()
 		end
@@ -188,7 +188,7 @@ if si == "[READY]" then
 	if sd == "[BAD]" then
 		ds = 1
 		end
-	--asi = "[NOT_NEEDED]"	
+	--asi = "[NOT_NEEDED]"	--Will be removed at a later date
 	end	
 if si == "[BAD]" then
 	air = os.execute("ping google.com -n 1") --Alternate Internet Testing
