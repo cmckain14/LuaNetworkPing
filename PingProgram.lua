@@ -3,21 +3,23 @@ function table()
 	if firstattheend == "table" then
 		os.execute( "cls" )
 		end
+	YIP	= "Your IP Address: "
 	INS = "Internet Status: "
 	ROS = "Router Status: "
 	DNS = "DNS Status: "
 	if MTIA == "Yes" then
 		MTI = "Towny Islands Status: "
 		end
-	--AIT = "Alt. Internet Status: " --Will be removed at a later date
-	r = {si, dsr, sd, mti} --Table of network results, without the Alt. Internet (add 'asi')
-	print(ROS..r[2])
-	print(INS..r[1])
-	print(DNS..r[3])
+	--AIT = "Alt. Internet Status: "
+	r = {yipa ,si, dsr, sd, mti} --Table of network results, without the Alt. Internet (add 'asi')
+	print(YIP..r[1])
+	print(ROS..r[3])
+	print(DNS..r[4])
+	print(INS..r[2])
 	if MTIA == "Yes" then
-		print(MTI..r[4])
+		print(MTI..r[5])
 		end
-	--print(AIT..r[4]) --Will be removed at a later date
+	--print(AIT..r[6])
 	if firstattheend == "status" then
 		endMessage()
 		end
@@ -51,8 +53,14 @@ function status()
 		print("The status of the connection to the main router is " ..sr..".")
 		end
 	print("The status of the connection to the internet is " ..si..".")
+	if ip == "0.0.0.0" then
+		ds = nil 
+		end
+	if ds == nil then
+		ds = 5
+		end
 	if asi ~= nil then
-		print("The status of the connection to a router, another than the main one ("..arip..") is " ..asi..".")	
+		print("The status of the connection to a router, another than the main one             ("..arip..") is " ..asi..".")	
 		end
 	if ds == 0 then
 		print("The internet is fully operational!")
@@ -69,15 +77,18 @@ function status()
 	if ds == 4 then
 		print("The router you are connected to (not the main one) is not connected to the internet.")
 		end
+	if ds == 5 then
+		print("You are not connected to a router at all and as a result there is not way to    check for an internet connection.")
+		end
 	if firstattheend == "table" then	
 		endMessage()
 		end
 	end
-function getIP() -- Do not change anything here
-	someRandomIP = "192.168.1.122" 
+function getIP() -- Do not change anything here, not needed any more but do not delete
+	someRandomIP = "192.168.1.1"
 	someRandomPort = "3102" 
 	mySocket = socket.udp() 
-	mySocket:setpeername(someRandomIP,someRandomPort) 
+	mySocket:setpeername(someRandomIP,someRandomPort)
 	end
 function debugging()
 	debugit = "off" --On or off for debug mode.
@@ -127,20 +138,38 @@ function endMessage()
 	end
 --Variables-- --Set these! :)	
 rip = "192.168.1.1" --Change this to your router's IP address	
+routername = "verizon.home"
 website = "google.com" --Change this to the site you would like to ping
 firstattheend = "table" --Which function goes first? The table or status?
 MTIA = "No" --Should there be an attempt to access the Towny Islands website? (Please say 'Yes')
 --Start of code--
 require("socket")
 require("table")
+print("Are you using Verizon? Yes or No?")
+service = io.read()
+if service ~= "Yes" then
+	a = 1
+	end	
+if service == "No" then
+	os.execute("tracert -h 1 "..rip)
+	print("Please input the name to the left of the [IP address] below.")
+	routername = io.read()
+	a = a - 1
+	end	
+if a == "1" then
+	error("You can't read!")
+	end
+ip = "0.0.0.0"
 ip = socket.dns.toip(website)
 getIP()
-arip = mySocket:getsockname() 
+yipa = mySocket:getsockname()
+arip = socket.dns.toip(routername)
 if rip ~= arip then
 	diff = 1
 	end
 if ip == nil then
-	error("No IP address found")
+	ip = "0.0.0.0"
+	sd = "[BAD]"
 	end	
 os.execute( "cls" )
 vt = 0
@@ -160,7 +189,9 @@ if mr == 1 then
 	end
 dsr = sr	
 if diff == 1 then
-	dsr = "[DIFFERENT IP, BUT OK]" 
+	if ip  ~= "0.0.0.0" then
+		dsr = "[DIFFERENT IP, BUT OK]" 
+		end
 	end
 print("The status of the connection to the router is " ..sr..".")
 if si == "[READY]" then
@@ -188,7 +219,7 @@ if si == "[READY]" then
 	if sd == "[BAD]" then
 		ds = 1
 		end
-	--asi = "[NOT_NEEDED]"	--Will be removed at a later date
+	--asi = "[NOT_NEEDED]"	
 	end	
 if si == "[BAD]" then
 	air = os.execute("ping google.com -n 1") --Alternate Internet Testing
@@ -203,7 +234,12 @@ if si == "[BAD]" then
 		si = "[OK]"
 		end
 	if asi == "[BAD]" then
-		ds = 4
+		if ip ~= "0.0.0.0" then
+			ds = 4
+			end
+		if ip == "0.0.0.0" then
+			ds = nil
+			end
 		end	
 	end
 if MTIA == "Yes" then	
