@@ -21,14 +21,21 @@ function table()
 		end
 	if firstattheend == "status" then
 		endMessage()
-		end
-	file = io.open("Logs.txt", "w")	
+		end	
+   end	
+function savetofile()
+	fn=os.date('%m_%d_%y %H_%M.txt')
+	file = io.open("logs\\"..fn, "w")
+	if file == nil then
+		os.execute("mkdir logs")
+		file = io.open(fn, "w")
+		end	
 	file:write(YIP..r[1]..", "..ROS..r[3]..", "..DNS..r[4]..", "..INS..r[2])
 	if routername ~= "verizon.home" then
 		file:write(", "..routername)
 		end
 	file:close()
-   end		
+	end
 function note()
 	if note == nil then
 		print("Note: Ignore the above information, the status of your connection will be shown below. Please press 'enter' to proceed.")
@@ -259,3 +266,4 @@ if MTIA == "Yes" then
 debugging()	
 table()
 status()
+savetofile()
