@@ -3,7 +3,7 @@ function table()
 	if firstattheend == "table" then
 		os.execute( "cls" )
 		end
-	YIP	= "Your IP Address: "
+	YIP = "Your IP Address: "
 	INS = "Internet Status: "
 	ROS = "Router Status: "
 	DNS = "DNS Status: "
@@ -19,11 +19,16 @@ function table()
 	if MTIA == "Yes" then
 		print(MTI..r[5])
 		end
-	--print(AIT..r[6])
 	if firstattheend == "status" then
 		endMessage()
 		end
-	end
+	file = io.open("Logs.txt", "w")	
+	file:write(YIP..r[1]..", "..ROS..r[3]..", "..DNS..r[4]..", "..INS..r[2])
+	if routername ~= "verizon.home" then
+		file:write(", "..routername)
+		end
+	file:close()
+   end		
 function note()
 	if note == nil then
 		print("Note: Ignore the above information, the status of your connection will be shown below. Please press 'enter' to proceed.")
