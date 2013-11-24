@@ -34,7 +34,9 @@ function savetofile()
 	if routername ~= "verizon.home" then
 		file:write(", "..routername)
 		end
+	file:flush()
 	file:close()
+	print("Logging complete.")
 	end
 function note()
 	if note == nil then
